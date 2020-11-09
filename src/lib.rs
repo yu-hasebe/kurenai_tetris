@@ -27,9 +27,16 @@ struct TetrisGameService {
 }
 
 impl GameService for TetrisGameService {
-    fn key_event(&self, key_event: &KeyEvent) {}
+    fn key_event(&self, key_event: &KeyEvent) {
+        if let Dropping = &self.state {}
+    }
 
-    fn update(&self) {}
+    fn update(&self) {
+        match &self.state {
+            Dropping => {}
+            Dropped => {}
+        }
+    }
 
     fn draw(&self, context: &web_sys::CanvasRenderingContext2d) {
         let image = self.image();
