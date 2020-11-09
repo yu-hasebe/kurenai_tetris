@@ -1,9 +1,11 @@
 mod field;
 mod shared;
+mod state;
 mod tetromino;
 
 use crate::field::Field;
 use crate::shared::Block;
+use crate::state::State;
 use crate::tetromino::{i::I, EnumTetromino, Tetromino};
 
 use kurenai::game_loop;
@@ -18,6 +20,7 @@ use std::rc::Rc;
 use wasm_bindgen::prelude::*;
 
 struct TetrisGameService {
+    state: RefCell<State>,
     field: RefCell<Field>,
     tetromino: RefCell<EnumTetromino>,
     image: Rc<web_sys::HtmlImageElement>,
@@ -44,9 +47,11 @@ impl TetrisGameService {
             let bytes = include_bytes!("./image.gif");
             image::create_new_html_image_element(&bytes.to_vec(), "gif")
         };
+        let state = State::Dropping;
         let field = Field::new(vec![Vec::new(); 1]);
         let tetromino = I::new();
         Self {
+            state: RefCell::new(state),
             field: RefCell::new(field),
             tetromino: RefCell::new(EnumTetromino::I(tetromino)),
             image: Rc::new(image),
