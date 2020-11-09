@@ -1,4 +1,10 @@
-use wasm_bindgen::prelude::*;
+mod field;
+mod shared;
+mod tetromino;
+
+use crate::field::Field;
+use crate::shared::Block;
+use crate::tetromino::{i::I, EnumTetromino, Tetromino};
 
 use kurenai::game_loop;
 use kurenai::game_service::GameService;
@@ -9,37 +15,24 @@ use std::cell::RefCell;
 use std::ops::Deref;
 use std::rc::Rc;
 
+use wasm_bindgen::prelude::*;
+
 struct TetrisGameService {
-    data: RefCell<i64>,
+    field: RefCell<Field>,
+    tetromino: RefCell<EnumTetromino>,
     image: Rc<web_sys::HtmlImageElement>,
 }
 
 impl GameService for TetrisGameService {
-    fn key_event(&self, key_event: &KeyEvent) {
-        if key_event.enter() {
-            let mut data = self.data.borrow_mut();
-            *data = 0;
-        }
-    }
+    fn key_event(&self, key_event: &KeyEvent) {}
 
-    fn update(&self) {
-        let mut data = self.data.borrow_mut();
-        *data += 1;
-    }
+    fn update(&self) {}
 
     fn draw(&self, context: &web_sys::CanvasRenderingContext2d) {
         let image = self.image();
         context
             .draw_image_with_html_image_element_and_sw_and_sh_and_dx_and_dy_and_dw_and_dh(
-                image,
-                0.0,
-                0.0,
-                32.0,
-                32.0,
-                self.data.borrow().clone() as f64,
-                self.data.borrow().clone() as f64,
-                32.0,
-                32.0,
+                image, 0.0, 0.0, 32.0, 32.0, 0.0, 0.0, 32.0, 32.0,
             )
             .expect(format!("Failed to draw image {:?}", image).as_str());
     }
@@ -47,10 +40,15 @@ impl GameService for TetrisGameService {
 
 impl TetrisGameService {
     fn new() -> Self {
-        let bytes = include_bytes!("./image.gif");
-        let image = image::create_new_html_image_element(&bytes.to_vec(), "gif");
+        let image = {
+            let bytes = include_bytes!("./image.gif");
+            image::create_new_html_image_element(&bytes.to_vec(), "gif")
+        };
+        let field = Field::new(vec![Vec::new(); 1]);
+        let tetromino = I::new();
         Self {
-            data: RefCell::new(0),
+            field: RefCell::new(field),
+            tetromino: RefCell::new(EnumTetromino::I(tetromino)),
             image: Rc::new(image),
         }
     }
