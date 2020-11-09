@@ -56,9 +56,9 @@ dependencies = [
 
 [[package]]
 name = "kurenai"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e7e64a755168213b961a9eaa1107867c3b8113332ea3ea2568cfb79b4dd14d8b"
+checksum = "c2422ecb27f6fc301864657b16064cb2465bbe9babd06ee9f734d111d2672fe9"
 dependencies = [
  "base64",
  "js-sys",
