@@ -28,7 +28,15 @@ impl Field {
         })
     }
     pub fn blocks(&self) -> Vec<Block> {
-        vec![]
+        let mut blocks = Vec::new();
+        for (y, row) in self.0.iter().enumerate() {
+            for (x, color_or_none) in row.iter().enumerate() {
+                if let Some(color) = color_or_none {
+                    blocks.push(Block::new(*color, x as i32, y as i32));
+                }
+            }
+        }
+        blocks
     }
 }
 
