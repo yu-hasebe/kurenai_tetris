@@ -9,18 +9,7 @@ pub mod z;
 use crate::shared::Block;
 use crate::tetromino::{i::I, j::J, l::L, o::O, s::S, t::T, z::Z};
 
-pub enum EnumTetromino {
-    I(I),
-    J(J),
-    L(L),
-    S(S),
-    Z(Z),
-    T(T),
-    O(O),
-}
-
 pub trait Tetromino {
-    fn new() -> Self;
     fn move_(&mut self, dir: MoveDirection);
     fn rotate(&mut self, dir: RotateDirection);
     fn dry_move(&self, dir: MoveDirection) -> Vec<Block>;

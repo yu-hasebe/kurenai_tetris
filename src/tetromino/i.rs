@@ -4,9 +4,6 @@ use crate::tetromino::{MoveDirection, RotateDirection, Tetromino};
 pub struct I;
 
 impl Tetromino for I {
-    fn new() -> Self {
-        Self
-    }
     fn move_(&mut self, dir: MoveDirection) {}
     fn rotate(&mut self, dir: RotateDirection) {}
     fn dry_move(&self, dir: MoveDirection) -> Vec<Block> {
@@ -17,5 +14,11 @@ impl Tetromino for I {
     }
     fn blocks(&self) -> Vec<Block> {
         Vec::new()
+    }
+}
+
+impl I {
+    pub fn new() -> Self {
+        Self
     }
 }

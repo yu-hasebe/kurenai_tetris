@@ -6,7 +6,7 @@ use derive_new::new;
 pub struct Field(Vec<Vec<Option<Color>>>);
 
 impl Field {
-    pub fn is_vacant(&self, blocks: Vec<Block>) -> bool {
+    pub fn is_vacant(&self, blocks: &Vec<Block>) -> bool {
         true
     }
     pub fn fix_blocks(&mut self, blocks: Vec<Block>) {}

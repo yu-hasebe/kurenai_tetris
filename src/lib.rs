@@ -4,9 +4,8 @@ mod state;
 mod tetromino;
 
 use crate::field::Field;
-use crate::shared::Block;
 use crate::state::State;
-use crate::tetromino::{i::I, EnumTetromino, Tetromino};
+use crate::tetromino::{i::I, MoveDirection, RotateDirection, Tetromino};
 
 use kurenai::game_loop;
 use kurenai::game_service::GameService;
@@ -22,19 +21,69 @@ use wasm_bindgen::prelude::*;
 struct TetrisGameService {
     state: RefCell<State>,
     field: RefCell<Field>,
-    tetromino: RefCell<EnumTetromino>,
+    tetromino: RefCell<Box<Tetromino>>,
     image: Rc<web_sys::HtmlImageElement>,
 }
 
 impl GameService for TetrisGameService {
     fn key_event(&self, key_event: &KeyEvent) {
-        if let Dropping = &self.state {}
+        if let Dropped = &self.state {
+            return;
+        }
+
+        let mut tetromino = self.tetromino.borrow_mut();
+        let field = self.field.borrow();
+
+        if key_event.arrow_left() {
+            let blocks = tetromino.dry_move(MoveDirection::Left);
+            if field.is_vacant(&blocks) {
+                tetromino.move_(MoveDirection::Left);
+            }
+        } else if key_event.arrow_right() {
+            let blocks = tetromino.dry_move(MoveDirection::Right);
+            if field.is_vacant(&blocks) {
+                tetromino.move_(MoveDirection::Right);
+            }
+        } else if key_event.arrow_down() {
+            let blocks = tetromino.dry_move(MoveDirection::Down);
+            if field.is_vacant(&blocks) {
+                tetromino.move_(MoveDirection::Down);
+            }
+        } else if key_event.key_z() {
+            let blocks = tetromino.dry_rotate(RotateDirection::Left);
+            if field.is_vacant(&blocks) {
+                tetromino.rotate(RotateDirection::Left);
+            }
+        } else if key_event.key_x() {
+            let blocks = tetromino.dry_rotate(RotateDirection::Right);
+            if field.is_vacant(&blocks) {
+                tetromino.rotate(RotateDirection::Right);
+            }
+        }
     }
 
     fn update(&self) {
-        match &self.state {
-            Dropping => {}
-            Dropped => {}
+        let mut state = self.state.borrow_mut();
+        let mut field = self.field.borrow_mut();
+        let mut tetromino = self.tetromino.borrow_mut();
+
+        match state.clone() {
+            Dropping => {
+                let blocks = tetromino.dry_move(MoveDirection::Down);
+                if field.is_vacant(&blocks) {
+                    tetromino.move_(MoveDirection::Down);
+                } else {
+                    *state = State::Dropped;
+                }
+            }
+            Dropped => {
+                let blocks = tetromino.blocks();
+                field.fix_blocks(blocks);
+                field.clear_blocks();
+
+                *tetromino = Box::new(I::new());
+                *state = State::Dropping;
+            }
         }
     }
 
@@ -60,7 +109,7 @@ impl TetrisGameService {
         Self {
             state: RefCell::new(state),
             field: RefCell::new(field),
-            tetromino: RefCell::new(EnumTetromino::I(tetromino)),
+            tetromino: RefCell::new(Box::new(tetromino)),
             image: Rc::new(image),
         }
     }
