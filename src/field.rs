@@ -64,3 +64,67 @@ impl Field {
         self.0.remove(row_idx as usize);
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_is_vacant_1() {
+        let field = {
+            let mut field = vec![vec![Some(Color::Cyan); 10]; 24];
+            field[0][0] = None;
+            field[0][1] = None;
+            field[0][2] = None;
+            field[0][3] = None;
+            Field(field)
+        };
+        let blocks = vec![
+            Block::new(Color::Cyan, 0, 0),
+            Block::new(Color::Cyan, 1, 0),
+            Block::new(Color::Cyan, 2, 0),
+            Block::new(Color::Cyan, 3, 0),
+        ];
+        assert_eq!(true, field.is_vacant(&blocks));
+    }
+
+    #[test]
+    fn test_is_vacant_2() {
+        let field = {
+            let mut field = vec![vec![None; 10]; 24];
+            field[0][0] = Some(Color::Cyan);
+            field[0][1] = Some(Color::Cyan);
+            field[0][2] = Some(Color::Cyan);
+            field[0][3] = Some(Color::Cyan);
+            Field(field)
+        };
+        let blocks = vec![
+            Block::new(Color::Cyan, 0, 0),
+            Block::new(Color::Cyan, 1, 0),
+            Block::new(Color::Cyan, 2, 0),
+            Block::new(Color::Cyan, 3, 0),
+        ];
+        assert_eq!(false, field.is_vacant(&blocks));
+    }
+
+    #[test]
+    fn test_is_vacant_3() {
+        let field = {
+            let mut field = vec![vec![Some(Color::Cyan); 10]; 24];
+            field[0][1] = None;
+            field[0][2] = None;
+            field[0][3] = None;
+            Field(field)
+        };
+        let blocks = vec![
+            Block::new(Color::Cyan, 0, 0),
+            Block::new(Color::Cyan, 1, 0),
+            Block::new(Color::Cyan, 2, 0),
+            Block::new(Color::Cyan, 3, 0),
+        ];
+        assert_eq!(false, field.is_vacant(&blocks));
+    }
+
+    #[test]
+    fn fix_blocks_1() {}
+}
