@@ -18,7 +18,14 @@ impl Field {
         }
     }
     pub fn clear_blocks(&mut self) -> i32 {
-        0
+        (3..=0).fold(0, |score, row_idx| {
+            if self.is_filled(row_idx) {
+                self.clear(row_idx);
+                score + 1
+            } else {
+                score
+            }
+        })
     }
     pub fn blocks(&self) -> Vec<Block> {
         vec![]
@@ -38,5 +45,14 @@ impl Field {
                 *color_or_none = Some(*block.color());
             }
         }
+    }
+    fn is_filled(&self, row_idx: i32) -> bool {
+        match self.0.get(row_idx as usize) {
+            Some(row) => row.iter().all(|color_or_none| color_or_none.is_some()),
+            None => false,
+        }
+    }
+    fn clear(&mut self, row_idx: i32) {
+        self.0.remove(row_idx as usize);
     }
 }
