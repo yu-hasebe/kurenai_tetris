@@ -3,7 +3,8 @@ use derive_new::new;
 #[derive(Clone, Copy, Debug, new)]
 pub struct Block {
     color: Color,
-    point: Point,
+    x: i32,
+    y: i32,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -15,12 +16,6 @@ pub enum Color {
     Red,
     Purple,
     Yellow,
-}
-
-#[derive(Clone, Copy, Debug, new)]
-pub struct Point {
-    x: i32,
-    y: i32,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -38,28 +33,24 @@ pub enum RotateDirection {
 
 impl Block {
     pub fn move_(&self, dir: MoveDirection) -> Self {
-        Self {
-            color: self.color,
-            point: self.point.move_(dir),
-        }
+        let color = self.color;
+        let (x, y) = match dir {
+            MoveDirection::Left => (self.x - 1, self.y),
+            MoveDirection::Right => (self.x + 1, self.y),
+            MoveDirection::Down => (self.x, self.y - 1),
+        };
+        Self { color, x, y }
     }
-}
 
-impl Point {
-    fn move_(&self, dir: MoveDirection) -> Self {
-        match dir {
-            MoveDirection::Left => Self {
-                x: self.x - 1,
-                y: self.y,
-            },
-            MoveDirection::Right => Self {
-                x: self.x + 1,
-                y: self.y,
-            },
-            MoveDirection::Down => Self {
-                x: self.x,
-                y: self.y - 1,
-            },
-        }
+    pub fn color(&self) -> &Color {
+        &self.color
+    }
+
+    pub fn x(&self) -> &i32 {
+        &self.x
+    }
+
+    pub fn y(&self) -> &i32 {
+        &self.y
     }
 }

@@ -4,7 +4,7 @@ mod state;
 mod tetromino;
 
 use crate::field::Field;
-use crate::shared::{Block, Color, MoveDirection, Point, RotateDirection};
+use crate::shared::{Block, Color, MoveDirection, RotateDirection};
 use crate::state::State;
 use crate::tetromino::{i::I, Tetromino, TetrominoDirection};
 
@@ -84,7 +84,7 @@ impl GameService for TetrisGameService {
 
                 *tetromino = Box::new(I::new(
                     TetrominoDirection::Down,
-                    Block::new(Color::Cyan, Point::new(4, 19)),
+                    Block::new(Color::Cyan, 4, 19),
                 ));
                 *state = State::Dropping;
             }
@@ -109,10 +109,7 @@ impl TetrisGameService {
         };
         let state = State::Dropping;
         let field = Field::new(vec![Vec::new(); 1]);
-        let tetromino = I::new(
-            TetrominoDirection::Down,
-            Block::new(Color::Cyan, Point::new(4, 19)),
-        );
+        let tetromino = I::new(TetrominoDirection::Down, Block::new(Color::Cyan, 4, 19));
         Self {
             state: RefCell::new(state),
             field: RefCell::new(field),
