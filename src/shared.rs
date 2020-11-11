@@ -1,13 +1,13 @@
 use derive_new::new;
 
-#[derive(Clone, Copy, Debug, new)]
+#[derive(Clone, Copy, Debug, Eq, new, PartialEq)]
 pub struct Block {
     color: Color,
     x: i32,
     y: i32,
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Color {
     Cyan,
     Blue,
