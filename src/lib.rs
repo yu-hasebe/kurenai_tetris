@@ -28,7 +28,7 @@ struct TetrisGameService {
 
 impl GameService for TetrisGameService {
     fn key_event(&self, key_event: &KeyEvent) {
-        if let Dropped = &self.state {
+        if let State::Dropping = self.state.borrow().clone() {
             return;
         }
 
@@ -69,7 +69,7 @@ impl GameService for TetrisGameService {
         let mut tetromino = self.tetromino.borrow_mut();
 
         match state.clone() {
-            Dropping => {
+            State::Dropping => {
                 let blocks = tetromino.dry_move(MoveDirection::Down);
                 if field.is_vacant(&blocks) {
                     tetromino.move_(MoveDirection::Down);
@@ -77,7 +77,7 @@ impl GameService for TetrisGameService {
                     *state = State::Dropped;
                 }
             }
-            Dropped => {
+            State::Dropped => {
                 let blocks = tetromino.blocks();
                 field.fix_blocks(blocks);
                 field.clear_blocks();
