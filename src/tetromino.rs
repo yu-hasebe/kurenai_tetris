@@ -20,7 +20,7 @@ pub trait Tetromino {
     fn blocks(&self) -> Vec<Block>;
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum TetrominoDirection {
     Left,
     Up,
