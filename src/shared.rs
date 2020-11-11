@@ -19,25 +19,21 @@ pub enum Color {
 }
 
 #[derive(Clone, Copy, Debug)]
-pub enum MoveDirection {
+pub enum Direction {
     Left,
+    Up,
     Right,
     Down,
 }
 
-#[derive(Clone, Copy, Debug)]
-pub enum RotateDirection {
-    Left,
-    Right,
-}
-
 impl Block {
-    pub fn move_(&self, dir: MoveDirection) -> Self {
+    pub fn move_(&self, dir: Direction) -> Self {
         let color = self.color;
         let (x, y) = match dir {
-            MoveDirection::Left => (self.x - 1, self.y),
-            MoveDirection::Right => (self.x + 1, self.y),
-            MoveDirection::Down => (self.x, self.y - 1),
+            Direction::Left => (self.x - 1, self.y),
+            Direction::Right => (self.x + 1, self.y),
+            Direction::Down => (self.x, self.y - 1),
+            Direction::Up => (self.x, self.y + 1),
         };
         Self { color, x, y }
     }

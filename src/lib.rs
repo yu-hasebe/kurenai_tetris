@@ -4,9 +4,9 @@ mod state;
 mod tetromino;
 
 use crate::field::Field;
-use crate::shared::{Block, Color, MoveDirection, RotateDirection};
+use crate::shared::{Block, Color};
 use crate::state::State;
-use crate::tetromino::{i::I, Tetromino, TetrominoDirection};
+use crate::tetromino::{i::I, MoveDirection, RotateDirection, Tetromino, TetrominoDirection};
 
 use kurenai::game_loop;
 use kurenai::game_service::GameService;
