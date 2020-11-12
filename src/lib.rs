@@ -29,7 +29,7 @@ struct TetrisGameService {
 
 impl GameService for TetrisGameService {
     fn key_event(&self, key_event: &KeyEvent) {
-        if !self.count.borrow().beat(8) {
+        if !self.count.borrow().beat(4) {
             return;
         }
 
