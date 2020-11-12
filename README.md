@@ -1,5 +1,6 @@
 ## What is this?
 An example game of [kurenai](https://github.com/yu-hasebe/kurenai)
+This game is in development and it lacks some features.
 
 ## Play
 https://yu-hasebe.github.io/kurenai_tetris/
