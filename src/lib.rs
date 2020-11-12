@@ -1,12 +1,11 @@
-mod field;
-mod shared;
-mod state;
-mod tetromino;
+mod models;
 
-use crate::field::Field;
-use crate::shared::{Block, Color};
-use crate::state::State;
-use crate::tetromino::{i::I, MoveDirection, RotateDirection, Tetromino, TetrominoDirection};
+use crate::models::{
+    field::Field,
+    shared::{Block, Color},
+    state::State,
+    tetromino::{i::I, MoveDirection, RotateDirection, Tetromino, TetrominoDirection},
+};
 
 use kurenai::game_loop;
 use kurenai::game_service::GameService;
@@ -29,6 +28,10 @@ struct TetrisGameService {
 
 impl GameService for TetrisGameService {
     fn key_event(&self, key_event: &KeyEvent) {
+        if self.count.borrow().clone() % 5 != 0 {
+            return;
+        }
+
         if let State::Dropped = self.state.borrow().clone() {
             return;
         }
@@ -90,8 +93,8 @@ impl GameService for TetrisGameService {
                 field.clear_blocks();
 
                 *tetromino = Box::new(I::new(
-                    TetrominoDirection::Down,
-                    Block::new(Color::Cyan, 4, 19),
+                    TetrominoDirection::Right,
+                    Block::new(Color::Cyan, 5, 20),
                 ));
                 *state = State::Dropping;
             }
@@ -123,12 +126,12 @@ impl GameService for TetrisGameService {
 impl TetrisGameService {
     fn new() -> Self {
         let image = {
-            let bytes = include_bytes!("./image.gif");
+            let bytes = include_bytes!("./assets/image.gif");
             image::create_new_html_image_element(&bytes.to_vec(), "gif")
         };
         let state = State::Dropping;
-        let field = Field::new(vec![vec![None; 10]; 24]);
-        let tetromino = I::new(TetrominoDirection::Down, Block::new(Color::Cyan, 4, 19));
+        let field = Field::new(vec![vec![None; 10]; 22]);
+        let tetromino = I::new(TetrominoDirection::Right, Block::new(Color::Cyan, 5, 20));
         Self {
             count: RefCell::new(0),
             state: RefCell::new(state),

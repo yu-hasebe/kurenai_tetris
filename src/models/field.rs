@@ -1,4 +1,4 @@
-use crate::shared::{Block, Color};
+use crate::models::shared::{Block, Color};
 
 use derive_new::new;
 
@@ -113,7 +113,7 @@ mod tests {
         let field_clone = field.clone();
         assert_eq!(0, field.clear_blocks());
         assert_eq!(field_clone, field);
-        assert_eq!(24, field.0.len());
+        assert_eq!(22, field.0.len());
     }
 
     #[test]
@@ -125,7 +125,7 @@ mod tests {
         assert_eq!(missing_line(), field.0[2]);
         assert_eq!(missing_line(), field.0[1]);
         assert_eq!(missing_line(), field.0[0]);
-        assert_eq!(24, field.0.len());
+        assert_eq!(22, field.0.len());
     }
 
     #[test]
@@ -138,7 +138,7 @@ mod tests {
         assert_eq!(missing_line(), field.0[2]);
         assert_eq!(missing_line(), field.0[1]);
         assert_eq!(missing_line(), field.0[0]);
-        assert_eq!(24, field.0.len());
+        assert_eq!(22, field.0.len());
     }
 
     #[test]
@@ -152,7 +152,7 @@ mod tests {
         assert_eq!(vec![None; 10], field.0[2]);
         assert_eq!(missing_line(), field.0[1]);
         assert_eq!(missing_line(), field.0[0]);
-        assert_eq!(24, field.0.len());
+        assert_eq!(22, field.0.len());
     }
 
     #[test]
@@ -167,7 +167,7 @@ mod tests {
         assert_eq!(vec![None; 10], field.0[2]);
         assert_eq!(vec![None; 10], field.0[1]);
         assert_eq!(missing_line(), field.0[0]);
-        assert_eq!(24, field.0.len());
+        assert_eq!(22, field.0.len());
     }
 
     #[test]
@@ -178,12 +178,12 @@ mod tests {
 
     #[test]
     fn test_blocks_2() {
-        let field = Field(vec![vec![None; 10]; 24]);
+        let field = Field(vec![vec![None; 10]; 22]);
         assert_eq!(Vec::<Block>::new(), field.blocks());
     }
 
     fn build_field_with_blocks(num: i32) -> Field {
-        let mut field = vec![vec![None; 10]; 24];
+        let mut field = vec![vec![None; 10]; 22];
         for row_idx in 0..num {
             field[row_idx as usize][0] = Some(Color::Cyan);
         }
@@ -191,7 +191,7 @@ mod tests {
     }
 
     fn build_field_with_missing_lines(num: i32) -> Field {
-        let mut field = vec![vec![None; 10]; 24];
+        let mut field = vec![vec![None; 10]; 22];
         for row_idx in 0..num {
             field[row_idx as usize] = missing_line();
         }

@@ -6,8 +6,10 @@ pub mod s;
 pub mod t;
 pub mod z;
 
-use crate::shared::{Block, Direction};
-use crate::tetromino::{i::I, j::J, l::L, o::O, s::S, t::T, z::Z};
+use crate::models::{
+    shared::{Block, Direction},
+    tetromino::{i::I, j::J, l::L, o::O, s::S, t::T, z::Z},
+};
 
 pub trait Tetromino {
     fn new(dir: TetrominoDirection, axis: Block) -> Self

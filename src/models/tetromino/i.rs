@@ -1,5 +1,7 @@
-use crate::shared::{Block, Direction};
-use crate::tetromino::{MoveDirection, RotateDirection, Tetromino, TetrominoDirection};
+use crate::models::{
+    shared::{Block, Direction},
+    tetromino::{MoveDirection, RotateDirection, Tetromino, TetrominoDirection},
+};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct I {
@@ -96,7 +98,7 @@ impl I {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::shared::Color;
+    use crate::models::shared::Color;
 
     #[test]
     fn test_move() {
