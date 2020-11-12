@@ -71,19 +71,9 @@ impl GameService for TetrisGameService {
         let mut tetromino = self.tetromino.borrow_mut();
 
         *count += 1;
-        if count.clone() % 100 != 0 {
+        if count.clone() % 10 != 0 {
             return;
         }
-
-        // web_sys::console::log_1(&JsValue::from_str(
-        //     format!(
-        //         "state: {:?}, field: {:?}, blocks: {:?}",
-        //         state,
-        //         field,
-        //         tetromino.blocks()
-        //     )
-        //     .as_str(),
-        // ));
 
         match state.clone() {
             State::Dropping => {
@@ -123,8 +113,6 @@ impl GameService for TetrisGameService {
             blocks_to_draw.append(&mut tetromino.blocks());
             blocks_to_draw
         };
-
-        web_sys::console::log_1(&JsValue::from_str(format!("{:?}", blocks_to_draw).as_str()));
 
         for block in blocks_to_draw.iter() {
             block.draw(context, image);

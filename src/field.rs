@@ -62,6 +62,7 @@ impl Field {
     }
     fn clear(&mut self, row_idx: i32) {
         self.0.remove(row_idx as usize);
+        self.0.push(vec![None; 10]);
     }
 }
 
@@ -112,6 +113,7 @@ mod tests {
         let field_clone = field.clone();
         assert_eq!(0, field.clear_blocks());
         assert_eq!(field_clone, field);
+        assert_eq!(24, field.0.len());
     }
 
     #[test]
@@ -123,6 +125,7 @@ mod tests {
         assert_eq!(missing_line(), field.0[2]);
         assert_eq!(missing_line(), field.0[1]);
         assert_eq!(missing_line(), field.0[0]);
+        assert_eq!(24, field.0.len());
     }
 
     #[test]
@@ -135,6 +138,7 @@ mod tests {
         assert_eq!(missing_line(), field.0[2]);
         assert_eq!(missing_line(), field.0[1]);
         assert_eq!(missing_line(), field.0[0]);
+        assert_eq!(24, field.0.len());
     }
 
     #[test]
@@ -148,6 +152,7 @@ mod tests {
         assert_eq!(vec![None; 10], field.0[2]);
         assert_eq!(missing_line(), field.0[1]);
         assert_eq!(missing_line(), field.0[0]);
+        assert_eq!(24, field.0.len());
     }
 
     #[test]
@@ -162,6 +167,7 @@ mod tests {
         assert_eq!(vec![None; 10], field.0[2]);
         assert_eq!(vec![None; 10], field.0[1]);
         assert_eq!(missing_line(), field.0[0]);
+        assert_eq!(24, field.0.len());
     }
 
     #[test]
