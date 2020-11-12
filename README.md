@@ -1,3 +1,9 @@
+## What is this?
+An example game of [kurenai](https://github.com/yu-hasebe/kurenai)
+
+## Play
+https://yu-hasebe.github.io/kurenai_tetris/
+
 ## How to install
 
 ```sh
