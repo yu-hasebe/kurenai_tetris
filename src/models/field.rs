@@ -18,7 +18,7 @@ impl Field {
         }
     }
     pub fn clear_blocks(&mut self) -> i32 {
-        (0..=3).rev().fold(0, |score, row_idx| {
+        (0..22).rev().fold(0, |score, row_idx| {
             if self.is_filled(row_idx) {
                 self.clear(row_idx);
                 score + 1
