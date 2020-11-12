@@ -12,8 +12,8 @@ impl Field {
             None => false,
         })
     }
-    pub fn can_fix(&self, blocks: &Vec<Block>) -> bool {
-        true
+    pub fn can_fix(blocks: &Vec<Block>) -> bool {
+        blocks.iter().any(|block| *block.y() < 20)
     }
     pub fn fix_blocks(&mut self, blocks: Vec<Block>) {
         for block in blocks.iter() {
@@ -93,6 +93,28 @@ mod tests {
         field.0[3][0] = Some(Color::Cyan);
         let blocks = build_blocks();
         assert_eq!(false, field.is_vacant(&blocks));
+    }
+
+    #[test]
+    fn test_can_fix_1() {
+        let blocks = vec![
+            Block::new(Color::Cyan, 0, 19),
+            Block::new(Color::Cyan, 0, 20),
+            Block::new(Color::Cyan, 0, 21),
+            Block::new(Color::Cyan, 0, 22),
+        ];
+        assert_eq!(true, Field::can_fix(&blocks));
+    }
+
+    #[test]
+    fn test_can_fix_2() {
+        let blocks = vec![
+            Block::new(Color::Cyan, 0, 20),
+            Block::new(Color::Cyan, 0, 21),
+            Block::new(Color::Cyan, 0, 22),
+            Block::new(Color::Cyan, 0, 23),
+        ];
+        assert_eq!(false, Field::can_fix(&blocks));
     }
 
     #[test]

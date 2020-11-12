@@ -1,6 +1,7 @@
 mod models;
 
 use crate::models::{
+    count::Count,
     field::Field,
     shared::{Block, Color},
     tetromino::{i::I, MoveDirection, RotateDirection, Tetromino, TetrominoDirection},
@@ -19,7 +20,7 @@ use std::rc::Rc;
 use wasm_bindgen::prelude::*;
 
 struct TetrisGameService {
-    count: RefCell<usize>,
+    count: RefCell<Count>,
     field: RefCell<Field>,
     tetromino_factory: RefCell<TetrominoFactory>,
     tetromino: RefCell<Box<Tetromino>>,
@@ -28,7 +29,7 @@ struct TetrisGameService {
 
 impl GameService for TetrisGameService {
     fn key_event(&self, key_event: &KeyEvent) {
-        if self.count.borrow().clone() % 5 != 0 {
+        if !self.count.borrow().beat(8) {
             return;
         }
 
@@ -66,8 +67,8 @@ impl GameService for TetrisGameService {
     fn update(&self) {
         let mut count = self.count.borrow_mut();
 
-        *count += 1;
-        if count.clone() % 10 != 0 {
+        count.add();
+        if !count.beat(16) {
             return;
         }
 
@@ -80,7 +81,7 @@ impl GameService for TetrisGameService {
             return;
         }
 
-        if field.can_fix(&blocks) {
+        if Field::can_fix(&blocks) {
             let blocks = tetromino.blocks();
             field.fix_blocks(blocks);
             field.clear_blocks();
@@ -127,7 +128,7 @@ impl TetrisGameService {
         let mut tetromino_factory = TetrominoFactory::new();
         let tetromino = tetromino_factory.pick_tetromino();
         Self {
-            count: RefCell::new(0),
+            count: RefCell::new(Count::new(0)),
             field: RefCell::new(field),
             tetromino_factory: RefCell::new(tetromino_factory),
             tetromino: RefCell::new(tetromino),

@@ -1,3 +1,4 @@
+pub mod count;
 pub mod field;
 pub mod shared;
 pub mod tetromino;
