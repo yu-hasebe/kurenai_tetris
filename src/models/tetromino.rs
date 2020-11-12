@@ -12,9 +12,6 @@ use crate::models::{
 };
 
 pub trait Tetromino {
-    fn new(dir: TetrominoDirection, axis: Block) -> Self
-    where
-        Self: Sized;
     fn move_(&mut self, move_dir: MoveDirection);
     fn rotate(&mut self, rotate_dir: RotateDirection);
     fn dry_move(&self, move_dir: MoveDirection) -> Vec<Block>;

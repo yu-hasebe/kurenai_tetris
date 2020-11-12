@@ -10,9 +10,6 @@ pub struct I {
 }
 
 impl Tetromino for I {
-    fn new(dir: TetrominoDirection, axis: Block) -> Self {
-        Self { dir, axis }
-    }
     fn move_(&mut self, move_dir: MoveDirection) {
         let dir = Direction::from(move_dir);
         self.set_axis(self.axis().move_(dir));
@@ -61,6 +58,12 @@ impl Tetromino for I {
             }
         }
         blocks
+    }
+}
+
+impl I {
+    pub fn new(dir: TetrominoDirection, axis: Block) -> Self {
+        Self { dir, axis }
     }
 }
 
