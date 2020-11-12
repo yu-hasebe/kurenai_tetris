@@ -3,11 +3,11 @@ use crate::models::{
     tetromino::{i::I, j::J, l::L, o::O, s::S, t::T, z::Z, Tetromino, TetrominoDirection},
 };
 
-pub struct TetrisFactory {
+pub struct TetrominoFactory {
     seven_bag: Vec<Box<Tetromino>>,
 }
 
-impl TetrisFactory {
+impl TetrominoFactory {
     pub fn new() -> Self {
         Self {
             seven_bag: Self::new_seven_bag(),
@@ -24,7 +24,7 @@ impl TetrisFactory {
     }
 }
 
-impl TetrisFactory {
+impl TetrominoFactory {
     fn new_seven_bag() -> Vec<Box<Tetromino>> {
         vec![Box::new(Self::create_i())]
     }

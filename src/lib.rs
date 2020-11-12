@@ -3,8 +3,8 @@ mod models;
 use crate::models::{
     field::Field,
     shared::{Block, Color},
-    state::State,
     tetromino::{i::I, MoveDirection, RotateDirection, Tetromino, TetrominoDirection},
+    tetromino_factory::TetrominoFactory,
 };
 
 use kurenai::game_loop;
@@ -20,8 +20,8 @@ use wasm_bindgen::prelude::*;
 
 struct TetrisGameService {
     count: RefCell<usize>,
-    state: RefCell<State>,
     field: RefCell<Field>,
+    tetromino_factory: RefCell<TetrominoFactory>,
     tetromino: RefCell<Box<Tetromino>>,
     image: Rc<web_sys::HtmlImageElement>,
 }
@@ -29,10 +29,6 @@ struct TetrisGameService {
 impl GameService for TetrisGameService {
     fn key_event(&self, key_event: &KeyEvent) {
         if self.count.borrow().clone() % 5 != 0 {
-            return;
-        }
-
-        if let State::Dropped = self.state.borrow().clone() {
             return;
         }
 
@@ -69,35 +65,33 @@ impl GameService for TetrisGameService {
 
     fn update(&self) {
         let mut count = self.count.borrow_mut();
-        let mut state = self.state.borrow_mut();
-        let mut field = self.field.borrow_mut();
-        let mut tetromino = self.tetromino.borrow_mut();
 
         *count += 1;
         if count.clone() % 10 != 0 {
             return;
         }
 
-        match state.clone() {
-            State::Dropping => {
-                let blocks = tetromino.dry_move(MoveDirection::Down);
-                if field.is_vacant(&blocks) {
-                    tetromino.move_(MoveDirection::Down);
-                } else {
-                    *state = State::Dropped;
-                }
-            }
-            State::Dropped => {
-                let blocks = tetromino.blocks();
-                field.fix_blocks(blocks);
-                field.clear_blocks();
+        let mut field = self.field.borrow_mut();
+        let mut tetromino = self.tetromino.borrow_mut();
 
-                *tetromino = Box::new(I::new(
-                    TetrominoDirection::Right,
-                    Block::new(Color::Cyan, 5, 20),
-                ));
-                *state = State::Dropping;
-            }
+        let blocks = tetromino.dry_move(MoveDirection::Down);
+        if field.is_vacant(&blocks) {
+            tetromino.move_(MoveDirection::Down);
+            return;
+        }
+
+        if field.can_fix(&blocks) {
+            let blocks = tetromino.blocks();
+            field.fix_blocks(blocks);
+            field.clear_blocks();
+        } else {
+            // game over
+        }
+
+        let mut tetromino_factory = self.tetromino_factory.borrow_mut();
+        *tetromino = tetromino_factory.pick_tetromino();
+        if !field.is_vacant(&tetromino.blocks()) {
+            // game over
         }
     }
 
@@ -129,14 +123,14 @@ impl TetrisGameService {
             let bytes = include_bytes!("./assets/image.gif");
             image::create_new_html_image_element(&bytes.to_vec(), "gif")
         };
-        let state = State::Dropping;
-        let field = Field::new(vec![vec![None; 10]; 22]);
-        let tetromino = I::new(TetrominoDirection::Right, Block::new(Color::Cyan, 5, 20));
+        let field = Field::new(vec![vec![None; 10]; 24]);
+        let mut tetromino_factory = TetrominoFactory::new();
+        let tetromino = tetromino_factory.pick_tetromino();
         Self {
             count: RefCell::new(0),
-            state: RefCell::new(state),
             field: RefCell::new(field),
-            tetromino: RefCell::new(Box::new(tetromino)),
+            tetromino_factory: RefCell::new(tetromino_factory),
+            tetromino: RefCell::new(tetromino),
             image: Rc::new(image),
         }
     }
