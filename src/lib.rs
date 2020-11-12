@@ -20,6 +20,7 @@ use std::rc::Rc;
 use wasm_bindgen::prelude::*;
 
 struct TetrisGameService {
+    count: RefCell<usize>,
     state: RefCell<State>,
     field: RefCell<Field>,
     tetromino: RefCell<Box<Tetromino>>,
@@ -28,7 +29,7 @@ struct TetrisGameService {
 
 impl GameService for TetrisGameService {
     fn key_event(&self, key_event: &KeyEvent) {
-        if let State::Dropping = self.state.borrow().clone() {
+        if let State::Dropped = self.state.borrow().clone() {
             return;
         }
 
@@ -64,9 +65,25 @@ impl GameService for TetrisGameService {
     }
 
     fn update(&self) {
+        let mut count = self.count.borrow_mut();
         let mut state = self.state.borrow_mut();
         let mut field = self.field.borrow_mut();
         let mut tetromino = self.tetromino.borrow_mut();
+
+        *count += 1;
+        if count.clone() % 100 != 0 {
+            return;
+        }
+
+        // web_sys::console::log_1(&JsValue::from_str(
+        //     format!(
+        //         "state: {:?}, field: {:?}, blocks: {:?}",
+        //         state,
+        //         field,
+        //         tetromino.blocks()
+        //     )
+        //     .as_str(),
+        // ));
 
         match state.clone() {
             State::Dropping => {
@@ -92,12 +109,26 @@ impl GameService for TetrisGameService {
     }
 
     fn draw(&self, context: &web_sys::CanvasRenderingContext2d) {
+        context.clear_rect(0.0, 0.0, 320.0, 640.0);
+
         let image = self.image();
-        context
-            .draw_image_with_html_image_element_and_sw_and_sh_and_dx_and_dy_and_dw_and_dh(
-                image, 0.0, 0.0, 32.0, 32.0, 0.0, 0.0, 32.0, 32.0,
-            )
-            .expect(format!("Failed to draw image {:?}", image).as_str());
+
+        let blocks_to_draw = {
+            let mut blocks_to_draw = Vec::new();
+
+            let field = self.field.borrow();
+            let tetromino = self.tetromino.borrow();
+
+            blocks_to_draw.append(&mut field.blocks());
+            blocks_to_draw.append(&mut tetromino.blocks());
+            blocks_to_draw
+        };
+
+        web_sys::console::log_1(&JsValue::from_str(format!("{:?}", blocks_to_draw).as_str()));
+
+        for block in blocks_to_draw.iter() {
+            block.draw(context, image);
+        }
     }
 }
 
@@ -108,9 +139,10 @@ impl TetrisGameService {
             image::create_new_html_image_element(&bytes.to_vec(), "gif")
         };
         let state = State::Dropping;
-        let field = Field::new(vec![Vec::new(); 1]);
+        let field = Field::new(vec![vec![None; 10]; 24]);
         let tetromino = I::new(TetrominoDirection::Down, Block::new(Color::Cyan, 4, 19));
         Self {
+            count: RefCell::new(0),
             state: RefCell::new(state),
             field: RefCell::new(field),
             tetromino: RefCell::new(Box::new(tetromino)),
