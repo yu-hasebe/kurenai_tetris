@@ -32,6 +32,7 @@ impl TetrominoFactory {
             Box::new(Self::create_l()),
             Box::new(Self::create_s()),
             Box::new(Self::create_z()),
+            Box::new(Self::create_t()),
         ]
     }
 
@@ -55,10 +56,10 @@ impl TetrominoFactory {
         Z::new(TetrominoDirection::Right, Block::new(Color::Red, 4, 20))
     }
 
-    // fn create_t() -> T {
-    //     T::new(TetrominoDirection::Right, Block::new(Color::Purple, 4, 20))
-    // }
-    //
+    fn create_t() -> T {
+        T::new(TetrominoDirection::Right, Block::new(Color::Purple, 4, 20))
+    }
+
     // fn create_o() -> O {
     //     O::new(TetrominoDirection::Right, Block::new(Color::Yellow, 4, 20))
     // }
