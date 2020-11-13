@@ -39,7 +39,7 @@ impl Tetromino for J {
                 blocks.push(self.axis().move_(Direction::Down));
                 blocks.push(*self.axis());
                 blocks.push(self.axis().move_(Direction::Up));
-                blocks.push(self.axis().move_(Direction::Up).move_(Direction::Right));
+                blocks.push(self.axis().move_(Direction::Right).move_(Direction::Up));
             }
             TetrominoDirection::Right => {
                 blocks.push(self.axis().move_(Direction::Left));
@@ -51,7 +51,7 @@ impl Tetromino for J {
                 blocks.push(self.axis().move_(Direction::Down));
                 blocks.push(*self.axis());
                 blocks.push(self.axis().move_(Direction::Up));
-                blocks.push(self.axis().move_(Direction::Up).move_(Direction::Right));
+                blocks.push(self.axis().move_(Direction::Right).move_(Direction::Up));
             }
         }
         blocks

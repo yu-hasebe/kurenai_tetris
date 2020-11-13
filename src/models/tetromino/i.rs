@@ -107,11 +107,20 @@ mod tests {
     fn test_move() {
         let mut i = build_i_tetromino();
         i.move_(MoveDirection::Left);
-        assert_eq!(Block::new(Color::Cyan, -1, 0), i.axis);
+        assert_eq!(
+            I::new(TetrominoDirection::Right, Block::new(Color::Cyan, -1, 0)),
+            i
+        );
         i.move_(MoveDirection::Right);
-        assert_eq!(Block::new(Color::Cyan, 0, 0), i.axis);
+        assert_eq!(
+            I::new(TetrominoDirection::Right, Block::new(Color::Cyan, 0, 0)),
+            i
+        );
         i.move_(MoveDirection::Down);
-        assert_eq!(Block::new(Color::Cyan, 0, -1), i.axis);
+        assert_eq!(
+            I::new(TetrominoDirection::Right, Block::new(Color::Cyan, 0, -1)),
+            i
+        );
     }
 
     #[test]
