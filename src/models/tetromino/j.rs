@@ -27,34 +27,32 @@ impl Tetromino for J {
         Self::new(dir, *self.axis()).blocks()
     }
     fn blocks(&self) -> Vec<Block> {
-        let mut blocks = Vec::new();
         match self.dir() {
-            TetrominoDirection::Left => {
-                blocks.push(self.axis().move_(Direction::Left));
-                blocks.push(*self.axis());
-                blocks.push(self.axis().move_(Direction::Right).move_(Direction::Down));
-                blocks.push(self.axis().move_(Direction::Right));
-            }
-            TetrominoDirection::Up => {
-                blocks.push(self.axis().move_(Direction::Down));
-                blocks.push(*self.axis());
-                blocks.push(self.axis().move_(Direction::Up));
-                blocks.push(self.axis().move_(Direction::Right).move_(Direction::Up));
-            }
-            TetrominoDirection::Right => {
-                blocks.push(self.axis().move_(Direction::Left));
-                blocks.push(self.axis().move_(Direction::Left).move_(Direction::Up));
-                blocks.push(*self.axis());
-                blocks.push(self.axis().move_(Direction::Right));
-            }
-            TetrominoDirection::Down => {
-                blocks.push(self.axis().move_(Direction::Down));
-                blocks.push(*self.axis());
-                blocks.push(self.axis().move_(Direction::Up));
-                blocks.push(self.axis().move_(Direction::Right).move_(Direction::Up));
-            }
+            TetrominoDirection::Left => vec![
+                self.axis().move_(Direction::Left),
+                *self.axis(),
+                self.axis().move_(Direction::Right).move_(Direction::Down),
+                self.axis().move_(Direction::Right),
+            ],
+            TetrominoDirection::Up => vec![
+                self.axis().move_(Direction::Down),
+                *self.axis(),
+                self.axis().move_(Direction::Up),
+                self.axis().move_(Direction::Right).move_(Direction::Up),
+            ],
+            TetrominoDirection::Right => vec![
+                self.axis().move_(Direction::Left),
+                self.axis().move_(Direction::Left).move_(Direction::Up),
+                *self.axis(),
+                self.axis().move_(Direction::Right),
+            ],
+            TetrominoDirection::Down => vec![
+                self.axis().move_(Direction::Down),
+                *self.axis(),
+                self.axis().move_(Direction::Up),
+                self.axis().move_(Direction::Right).move_(Direction::Up),
+            ],
         }
-        blocks
     }
 }
 

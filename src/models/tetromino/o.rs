@@ -27,12 +27,11 @@ impl Tetromino for O {
         Self::new(dir, *self.axis()).blocks()
     }
     fn blocks(&self) -> Vec<Block> {
-        let axis = self.axis();
         vec![
-            *axis,
-            axis.move_(Direction::Up),
-            axis.move_(Direction::Right),
-            axis.move_(Direction::Right).move_(Direction::Up),
+            *self.axis(),
+            self.axis().move_(Direction::Up),
+            self.axis().move_(Direction::Right),
+            self.axis().move_(Direction::Right).move_(Direction::Up),
         ]
     }
 }
