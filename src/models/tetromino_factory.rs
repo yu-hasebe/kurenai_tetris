@@ -26,21 +26,25 @@ impl TetrominoFactory {
 
 impl TetrominoFactory {
     fn new_seven_bag() -> Vec<Box<Tetromino>> {
-        vec![Box::new(Self::create_i())]
+        vec![
+            Box::new(Self::create_i()),
+            Box::new(Self::create_j()),
+            Box::new(Self::create_l()),
+        ]
     }
 
     fn create_i() -> I {
         I::new(TetrominoDirection::Right, Block::new(Color::Cyan, 5, 20))
     }
 
-    // fn create_j() -> J {
-    //     J::new(TetrominoDirection::Right, Block::new(Color::Blue, 4, 20))
-    // }
-    //
-    // fn create_l() -> L {
-    //     L::new(TetrominoDirection::Right, Block::new(Color::Orange, 4, 20))
-    // }
-    //
+    fn create_j() -> J {
+        J::new(TetrominoDirection::Right, Block::new(Color::Blue, 4, 20))
+    }
+
+    fn create_l() -> L {
+        L::new(TetrominoDirection::Right, Block::new(Color::Orange, 4, 20))
+    }
+
     // fn create_s() -> S {
     //     S::new(TetrominoDirection::Right, Block::new(Color::Green, 4, 20))
     // }
