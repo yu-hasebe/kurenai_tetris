@@ -62,8 +62,8 @@ impl Block {
                 0.0,
                 32.0,
                 32.0,
-                (*self.x() * 32) as f64,
-                ((19 - *self.y()) * 32) as f64,
+                self.x_idx_on_canvas(),
+                self.y_idx_on_canvas(),
                 32.0,
                 32.0,
             )
@@ -82,5 +82,13 @@ impl Block {
             Color::Purple => 6.0,
             Color::Yellow => 7.0,
         }
+    }
+
+    fn x_idx_on_canvas(&self) -> f64 {
+        (*self.x() * 32) as f64
+    }
+
+    fn y_idx_on_canvas(&self) -> f64 {
+        ((19 - *self.y()) * 32) as f64
     }
 }
