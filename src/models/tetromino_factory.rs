@@ -1,5 +1,5 @@
 use crate::models::{
-    shared::{Block, Color},
+    block::{Block, Color},
     tetromino::{i::I, j::J, l::L, o::O, s::S, t::T, z::Z, Tetromino, TetrominoDirection},
 };
 

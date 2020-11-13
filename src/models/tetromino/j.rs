@@ -1,5 +1,5 @@
 use crate::models::{
-    shared::{Block, Direction},
+    block::{Block, Direction},
     tetromino::{MoveDirection, RotateDirection, Tetromino, TetrominoDirection},
 };
 
@@ -80,7 +80,7 @@ impl J {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::models::shared::Color;
+    use crate::models::block::Color;
 
     #[test]
     fn test_move() {

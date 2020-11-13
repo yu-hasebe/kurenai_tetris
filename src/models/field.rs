@@ -1,4 +1,4 @@
-use crate::models::shared::{Block, Color};
+use crate::models::block::{Block, Color};
 
 use derive_new::new;
 

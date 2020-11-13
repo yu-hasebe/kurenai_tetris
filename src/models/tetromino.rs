@@ -7,7 +7,7 @@ pub mod t;
 pub mod z;
 
 use crate::models::{
-    shared::{Block, Direction},
+    block::{Block, Direction},
     tetromino::{i::I, j::J, l::L, o::O, s::S, t::T, z::Z},
 };
 

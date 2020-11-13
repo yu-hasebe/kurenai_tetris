@@ -1,9 +1,9 @@
 mod models;
 
 use crate::models::{
+    block::{Block, Color},
     count::Count,
     field::Field,
-    shared::{Block, Color},
     tetromino::{i::I, MoveDirection, RotateDirection, Tetromino, TetrominoDirection},
     tetromino_factory::TetrominoFactory,
 };
