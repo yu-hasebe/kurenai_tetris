@@ -1,10 +1,9 @@
 mod models;
 
 use crate::models::{
-    block::{Block, Color},
     count::Count,
     field::Field,
-    tetromino::{i::I, MoveDirection, RotateDirection, Tetromino, TetrominoDirection},
+    tetromino::{MoveDirection, RotateDirection, Tetromino},
     tetromino_factory::TetrominoFactory,
 };
 
@@ -23,7 +22,7 @@ struct TetrisGameService {
     count: RefCell<Count>,
     field: RefCell<Field>,
     tetromino_factory: RefCell<TetrominoFactory>,
-    tetromino: RefCell<Box<Tetromino>>,
+    tetromino: RefCell<Box<dyn Tetromino>>,
     image: Rc<web_sys::HtmlImageElement>,
 }
 

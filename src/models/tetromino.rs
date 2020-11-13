@@ -6,10 +6,7 @@ pub mod s;
 pub mod t;
 pub mod z;
 
-use crate::models::{
-    block::{Block, Direction},
-    tetromino::{i::I, j::J, l::L, o::O, s::S, t::T, z::Z},
-};
+use crate::models::block::{Block, Direction};
 
 pub trait Tetromino {
     fn move_(&mut self, move_dir: MoveDirection);

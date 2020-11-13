@@ -159,20 +159,20 @@ mod tests {
     #[test]
     fn test_blocks() {
         let mut o = build_o_tetromino();
-        assert_eq!(build_o_blocks(TetrominoDirection::Right), o.blocks());
+        assert_eq!(build_o_blocks(), o.blocks());
         o.rotate(RotateDirection::Right);
-        assert_eq!(build_o_blocks(TetrominoDirection::Down), o.blocks());
+        assert_eq!(build_o_blocks(), o.blocks());
         o.rotate(RotateDirection::Right);
-        assert_eq!(build_o_blocks(TetrominoDirection::Left), o.blocks());
+        assert_eq!(build_o_blocks(), o.blocks());
         o.rotate(RotateDirection::Right);
-        assert_eq!(build_o_blocks(TetrominoDirection::Up), o.blocks());
+        assert_eq!(build_o_blocks(), o.blocks());
     }
 
     fn build_o_tetromino() -> O {
         O::new(TetrominoDirection::Right, Block::new(Color::Yellow, 0, 0))
     }
 
-    fn build_o_blocks(dir: TetrominoDirection) -> Vec<Block> {
+    fn build_o_blocks() -> Vec<Block> {
         vec![
             Block::new(Color::Yellow, 0, 0),
             Block::new(Color::Yellow, 0, 1),

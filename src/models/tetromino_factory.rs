@@ -4,7 +4,7 @@ use crate::models::{
 };
 
 pub struct TetrominoFactory {
-    seven_bag: Vec<Box<Tetromino>>,
+    seven_bag: Vec<Box<dyn Tetromino>>,
     rand: usize,
 }
 
@@ -16,7 +16,7 @@ impl TetrominoFactory {
         }
     }
 
-    pub fn pick_tetromino(&mut self) -> Box<Tetromino> {
+    pub fn pick_tetromino(&mut self) -> Box<dyn Tetromino> {
         if let Some(tetromino) = self.seven_bag.pop() {
             tetromino
         } else {
@@ -25,14 +25,14 @@ impl TetrominoFactory {
         }
     }
 
-    fn new_seven_bag(&mut self) -> Vec<Box<Tetromino>> {
+    fn new_seven_bag(&mut self) -> Vec<Box<dyn Tetromino>> {
         self.fisher_yates_shuffle(&mut Self::build_seven_tetrominos())
     }
 
     fn fisher_yates_shuffle(
         &mut self,
-        to_shuffle: &mut Vec<Box<Tetromino>>,
-    ) -> Vec<Box<Tetromino>> {
+        to_shuffle: &mut Vec<Box<dyn Tetromino>>,
+    ) -> Vec<Box<dyn Tetromino>> {
         let mut ret = Vec::new();
         for i in (1..=7).rev() {
             let rand = self.linear_congruential_generate();
@@ -51,7 +51,7 @@ impl TetrominoFactory {
 }
 
 impl TetrominoFactory {
-    fn build_seven_tetrominos() -> Vec<Box<Tetromino>> {
+    fn build_seven_tetrominos() -> Vec<Box<dyn Tetromino>> {
         vec![
             Box::new(Self::build_default_i()),
             Box::new(Self::build_default_j()),
